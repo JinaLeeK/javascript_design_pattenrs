@@ -6,51 +6,22 @@
   <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 </head>
 <body>
-  <ul data-bind="foreach: names">
-    <li data-bind="text: name, click: $parent.showIndex"></li>
-  </ul>
-  <div data-bind="text: thisIndex"></div>
+  <p>First name: <input type="text" data-bind="value: firstName"></p>
+  <p>Last name: <input type="text" data-bind="value: lastName"></p>
+  <h1>Hello, <span data-bind="text: fullName"></span>!</h1>
 
   <script>
-  var ViewModel = function() {
-    var self = this;
-    this.thisIndex = ko.observable();
-    var nameList = [
-      {name: 'text1'},
-      {name: 'text2'}
-    ];
+    var ViewModel = function(first, last) {
+      this.firstName = ko.observable(first);
+      this.lastName = ko.observable(last);
 
-    this.names = ko.observable(nameList);
+      this.fullName = ko.pureComputed(function() {
+        return this.firstName() + " " + this.lastName();
+      }, this);
+    };
 
-    this.showIndex = function() {
-      self.thisIndex(nameList[this]);
-  }
-}
-
-  ko.applyBindings(new ViewModel());
-  // var initialItems = [
-  //   { item: 'A'},
-  //   { item: 'B'},
-  //   { item: 'C'}
-  // ]
-  //
-  // var ViewModel = function(){
-  //   var self = this;
-  //   this.items = ko.observableArray([]);
-  //   this.thisIndex = ko.observable('');
-  //
-  //   initialItems.forEach( function(eachItem){
-  //     self.items.push(eachItem);
-  //   });
-  //
-  //   this.showIndex = function() {
-  //     self.thisIndex = 'test';
-  //   }
-  // }
-  //
-  // ko.applyBindings(new ViewModel());
+    ko.applyBindings(new ViewModel("Planet", "Earth"));
   </script>
 </body>
 
 </html>
-<body>
