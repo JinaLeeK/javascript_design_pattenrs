@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" data-framework="backbonejs">
+	<head>
+		<meta charset="utf-8">
+		<script src="jquery/jquery.js"></script>
+		<script src="underscore/underscore.js"></script>
+		<script src="backbone/backbone.js"></script>
+	</head>
+  <body>
+  <script type="text/JavaScript">
+  var Song = Backbone.Model.extend({
+    defaults: {
+      name: "Not specified",
+      artist: "Not specified"
+    },
+
+    initialize: function() {
+      console.log("Music is the answer");
+    }
+  });
+
+  var Album = Backbone.Collection.extend({
+    model: Song
+  })
+
+  var song1 = new Song( {name: "How", artist: "OMC"});
+  var song2 = new Song( {name: "Healing", artist: "Marvin"});
+  var song3 = new Song( {name: "Talk", artist: "OMC"});
+
+  var myAlbum = new Album([song1, song2, song3]);
+  console.log(myAlbum.models);
+
+  </script>
+  </body>
+</html>

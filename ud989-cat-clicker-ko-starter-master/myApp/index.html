@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+  <meta charset="UTF-8">
+  <title>Cat Clicker</title>
+  <script src="js/lib/knockout-3.2.0.js"></script>
+</head>
+<body>
+  <div data-bind="with: currentCat">
+    <h2 data-bind="text: name"></h2>
+    <h3 data-bind="text: title"></h3>
+    <div data-bind="text: clickCount"></div>
+    <img src="" alt="cute cate" data-bind="click: $parent.incrementCounter,
+    attr: {src: imgSrc}">
+    <div>
+      <h3>Nick Name</h3>
+      <ul data-bind="foreach: nickname">
+        <li data-bind="text: $data"></li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+
+  var initialCats = [
+    {
+      clickCount: 0,
+      name: 'Tabby',
+      imgSrc:'https://lh4.ggpht.com/dUJNejPqb_qLsV1kfWcvviqc7adxsw02BSAm8YLWNklP4lI6fQCLKXd-28uKuchtjoEUpqFN0K6kkTSDHw=s0#w=588&h=640',
+      nickname: ['T', 'A','T']
+  },
+  {
+    clickCount: 0,
+    name: 'Tiger',
+    imgSrc: 'https://lh5.ggpht.com/LfjkdmOKkGLvCt-VuRlWGjAjXqTBrPjRsokTNKBtCh8IFPRetGaXIpTQGE2e7ZCUaG2azKNkz38KkbM_emA=s0#w=640&h=454'
+  },
+  {
+    clickCount: 0,
+    name: 'Scaredy',
+    imgSrc: 'https://lh3.ggpht.com/cesD31eroFxIZ4IEeXPAJkx_8i5-haU3P9LQosGNfV-GfAPUh2bE4iw4zV6Mc9XobWOR70BQh2JAP57wZlM=s0#w=640&h=480'
+  },
+  {
+    clickCount: 0,
+    name: 'Shaddy',
+    imgSrc: 'https://lh3.ggpht.com/nlI91wYNCrjjNy5f-S3CmVehIBM4cprx-JFWOztLk7vFlhYuFR6YnxcT446AvxYg4Ab7M1Fy0twaOCWYcUk=s0#w=640&h=426'
+  }];
+
+  var Cat = function(data) {
+    this.clickCount = ko.observable(data.clickCount);
+    this.name = ko.observable(data.name);
+    this.imgSrc = ko.observable(data.imgSrc);
+    this.nickname = ko.observableArray(data.nickname);
+
+    this.title = ko.computed(function() {
+      var title;
+      var clicks = this.clickCount();
+      if (clicks < 10) {
+        title = 'Newborn';
+      } else if (clicks < 50) {
+        title = 'Infant';
+      } else if (clicks < 100) {
+        title = 'Child';
+      } else {
+        title = 'Ninja';
+      }
+      return title;
+    }, this);
+  }
+ // Make the cats show up in a list
+ // Make the currentCat change when you click on a cat in the list
+  var ViewModel = function() {
+    var self = this;
+
+    this.catList = ko.observableArray([]);
+
+    initialCats.forEach( function(catItem) {
+      self.catList.push( new Cat(catItem) );
+    });
+
+    this.currentCat = ko.observable( this.catList()[0]);
+
+    this.incrementCounter = function() {
+      self.currentCat().clickCount(self.currentCat().clickCount() + 1);
+    };
+  }
+
+  ko.applyBindings(new ViewModel());
+  </script>
+  <!-- <script src="js/app.js"></script> -->
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  .target1{
+    float: left;
+    margin-right: 20px;
+  }
+  .target1:hover{
+    cursor: pointer;
+  }
+  .target2{
+    float: left;
+  }
+  .target2:hover{
+    cursor: pointer;
+  }
+
+</style>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+</head>
+<body>
+<script>
+var cats = ['cat1', 'cat2'];
+var click = [num1=0, num2=0];
+var imageURL = ["https://lh3.ggpht.com/nlI91wYNCrjjNy5f-S3CmVehIBM4cprx-JFWOztLk7vFlhYuFR6YnxcT446AvxYg4Ab7M1Fy0twaOCWYcUk=s0#w=640&h=426", "https://lh3.ggpht.com/kixazxoJ2ufl3ACj2I85Xsy-Rfog97BM75ZiLaX02KgeYramAEqlEHqPC3rKqdQj4C1VFnXXryadFs1J9A=s0#w=640&h=496"];
+
+document.body.innerHTML = '';
+
+for (var i=0; i<cats.length; i++){
+  var elem = document.createElement('div');
+  var image = '<img src="'+imageURL[i]+'" style="height:200px"/>';
+  $(elem).html(cats[i]+"<span></span>").append("<div>"+image+"</div>").addClass("target"+(i+1));
+
+  $(elem).click(function(index){
+    return function(){
+      click[index] += 1;
+      var target = '.'+$(this).attr('class')+' span';
+      $(target).html(": "+click[index]);
+    }
+  }(i));
+
+  $("body").append(elem);
+}
+</script>
+</body>
+</html>

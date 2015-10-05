@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+  <meta charset="UTF-8">
+  <script src="js/lib/knockout-3.2.0.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+</head>
+<body>
+  <ul data-bind="foreach: names">
+    <li data-bind="text: name, click: $parent.showIndex"></li>
+  </ul>
+  <div data-bind="text: thisIndex"></div>
+
+  <script>
+  var ViewModel = function() {
+    var self = this;
+    this.thisIndex = ko.observable();
+    var nameList = [
+      {name: 'text1'},
+      {name: 'text2'}
+    ];
+
+    this.names = ko.observable(nameList);
+
+    this.showIndex = function() {
+      self.thisIndex(nameList[this]);
+  }
+}
+
+  ko.applyBindings(new ViewModel());
+  // var initialItems = [
+  //   { item: 'A'},
+  //   { item: 'B'},
+  //   { item: 'C'}
+  // ]
+  //
+  // var ViewModel = function(){
+  //   var self = this;
+  //   this.items = ko.observableArray([]);
+  //   this.thisIndex = ko.observable('');
+  //
+  //   initialItems.forEach( function(eachItem){
+  //     self.items.push(eachItem);
+  //   });
+  //
+  //   this.showIndex = function() {
+  //     self.thisIndex = 'test';
+  //   }
+  // }
+  //
+  // ko.applyBindings(new ViewModel());
+  </script>
+</body>
+
+</html>
+<body>

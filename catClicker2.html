@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  .target1:hover {
+    cursor: pointer;
+  }
+  .target2:hover {
+    cursor: pointer;
+  }
+  .target3:hover {
+    cursor: pointer;
+  }
+  fieldset{
+    margin-bottom: 20px;
+    width:300px;
+  }
+</style>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+</head>
+<body>
+<script>
+  var cats = ["cat1", "cat2", "cat3"];
+  var nums = [num1=0, num2=0, num3=0];
+  var imageURL = ["https://lh3.ggpht.com/nlI91wYNCrjjNy5f-S3CmVehIBM4cprx-JFWOztLk7vFlhYuFR6YnxcT446AvxYg4Ab7M1Fy0twaOCWYcUk=s0#w=640&h=426",
+                  "https://lh3.ggpht.com/kixazxoJ2ufl3ACj2I85Xsy-Rfog97BM75ZiLaX02KgeYramAEqlEHqPC3rKqdQj4C1VFnXXryadFs1J9A=s0#w=640&h=496",
+                  "https://lh5.ggpht.com/LfjkdmOKkGLvCt-VuRlWGjAjXqTBrPjRsokTNKBtCh8IFPRetGaXIpTQGE2e7ZCUaG2azKNkz38KkbM_emA=s0#w=640&h=454"];
+
+  for (var i=0; i<cats.length; i++){
+    var elem = document.createElement("span");
+    $("body").append(elem);
+    $(elem).html(cats[i]).addClass("target"+(i+1)).after(" ");
+    $(elem).click(function(index){
+      return function(){
+        if (nums[index]===0){
+          nums[index] += 1;
+          var area = document.createElement("fieldset");
+          var elemName = document.createElement("div");
+          var elemClicks = document.createElement("div");
+          var elemImage = document.createElement("div");
+          var imageHTML = '<img src="'+imageURL[index]+'" style="height:300px">';
+          $(elemName).html(cats[index]);
+          $(elemClicks).html(nums[index]).addClass("click"+(index+1));
+          $(elemImage).html(imageHTML);
+          $(area).append(elemName).append(elemClicks).append(imageHTML);
+          $("body").append(area);
+        } else{
+          var className = '.click'+(index+1);
+          nums[index] += 1;
+          $(className).html(nums[index]);
+        }
+
+        }
+    }(i))
+  }
+</script>
+</body>
+</html>
