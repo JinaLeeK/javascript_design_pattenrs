@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+  <meta charset="UTF-8">
+  <script src="js/lib/knockout-3.2.0.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+</head>
+<body>
+  <h2>Planets</h2>
+<p>
+    <label>
+        <input type='checkbox' data-bind='checked: displayAdvancedOptions' />
+        Display advanced options
+    </label>
+</p>
+
+<p data-bind='fadeVisible: displayAdvancedOptions'>
+    Show:
+    <label><input type='radio' name="type" value='all' data-bind='checked: typeToShow' />All</label>
+    <label><input type='radio' name="type" value='rock' data-bind='checked: typeToShow' />Rocky planets</label>
+    <label><input type='radio' name="type" value='gasgiant' data-bind='checked: typeToShow' />Gas giants</label>
+</p>
+
+<div data-bind='template: { foreach: planetsToShow,
+                            beforeRemove: hidePlanetElement,
+                            afterAdd: showPlanetElement }'>
+    <div data-bind='attr: { "class": "planet " + type }, text: name'> </div>
+</div>
+
+<p data-bind='fadeVisible: displayAdvancedOptions'>
+    <button data-bind='click: addPlanet.bind($data, "rock")'>Add rocky planet</button>
+    <button data-bind='click: addPlanet.bind($data, "gasgiant")'>Add gas giant</button>
+</p>
+
+<script>
+  var PlanetsModel = function() {
+    this.planets = ko.observableArray([
+        { name: "Mercury", type: "rock"},
+        { name: "Venus", type: "rock"},
+        { name: "Earth", type: "rock"},
+        { name: "Mars", type: "rock"},
+        { name: "Jupiter", type: "gasgiant"},
+        { name: "Saturn", type: "gasgiant"},
+        { name: "Uranus", type: "gasgiant"},
+        { name: "Neptune", type: "gasgiant"}
+    ]);
+
+  this.typeToShow = ko.observable("all");
+  this.displayAdvancedOptions = ko.observable(false);
+
+  this.addPlanet = function(type) {
+      this.planets.push({
+          name: "New planet",
+          type: type
+      });
+  };
+
+  this.planetsToShow = ko.pureComputed(function() {
+        var desiredType = this.typeToShow();
+        if (desiredType == "all") return this.planets();
+        return ko.utils.arrayFilter(this.planets(), function(planet) {
+            return planet.type == desiredType;
+        });
+    }, this);
+
+  this.showPlanetElement = function(elem) { if (elem.nodeType === 1) $(elem).hide().slideDown() }
+  this.hidePlanetElement = function(elem) { if (elem.nodeType === 1) $(elem).slideUp(function() { $(elem).remove(); }) }
+};
+
+ko.bindingHandlers.fadeVisible = {
+    init: function(element, valueAccessor) {
+        // Initially set the element to be instantly visible/hidden depending on the value
+        var value = valueAccessor();
+        $(element).toggle(ko.unwrap(value)); // Use "unwrapObservable" so we can handle values that may or may not be observable
+    },
+    update: function(element, valueAccessor) {
+        // Whenever the value subsequently changes, slowly fade the element in or out
+        var value = valueAccessor();
+        ko.unwrap(value) ? $(element).fadeIn() : $(element).fadeOut();
+    }
+};
+
+ko.applyBindings(new PlanetsModel());
+
+</script>
+</body>
+
+</html>

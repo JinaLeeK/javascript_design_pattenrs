@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+  <meta charset="UTF-8">
+  <script src="js/lib/knockout-3.2.0.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+</head>
+<body>
+  <div>You've clicked <span data-bind="text: numberOfClicks">times</span></div>
+  <button data-bind="click: registerClick, disable: hasClickedTooManyTimes">Click me</button>
+
+  <div data-bind="visible: hasClickedTooManyTimes">
+    That's too many clicks! Please stop before you wear out
+    your fingers.
+    <button data-bind="click: resetClicks">Reset clicks</button>
+  </div>
+
+  <script>
+    var ViewModel = function() {
+      this.numberOfClicks = ko.observable(0);
+      this.registerClick = function() {
+        this.numberOfClicks(this.numberOfClicks() + 1);
+      };
+
+      this.hasClickedTooManyTimes = ko.pureComputed(function() {
+        return this.numberOfClicks() >= 3;
+      }, this);
+
+      this.resetClicks = function() {
+        this.numberOfClicks(0);
+      };
+
+    };
+
+    ko.applyBindings(new ViewModel());
+  </script>
+
+</body>
+</html>

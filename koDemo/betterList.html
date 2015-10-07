@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+  <meta charset="UTF-8">
+  <script src="js/lib/knockout-3.2.0.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+</head>
+<body>
+  <form data-bind="submit: addItem">
+    Add item: <input data-bind='value: itemToAdd, valueUpdate: "afterkeydown"'>
+    <button type="submit" data-bind="enable: itemToAdd().length>0">Add</button>
+  </form>
+    <p>Your values:</p>
+    <p><select multiple="multiple" height="5" data-bind='options:allItems, selectedOptions:selectedItem'></select><p>
+    <button data-bind='click: removeItem, enable:selectedItem().length>0'>Remove</button>
+    <button data-bind='click: itemSort, enable:allItems().length>0'>Sort</button>
+
+  <script>
+  var ViewModel = function() {
+    this.allItems = ko.observableArray(["Fries", "Eggs Benedict", "Ham"]);
+    this.selectedItem = ko.observableArray(["Fries"]);
+    this.itemToAdd = ko.observableArray("");
+    this.addItem = function(){
+      if((this.itemToAdd() != "") && (this.allItems.indexOf(this.itemToAdd())<0)) {
+        this.allItems.push(this.itemToAdd());
+        this.itemToAdd("");
+      }
+    };
+
+    this.removeItem = function() {
+      this.allItems.removeAll(this.selectedItem());
+      // this.selectedItems([]);
+    };
+
+    this.itemSort = function() {
+      this.allItems.sort();
+    }
+  };
+
+  ko.applyBindings(new ViewModel());
+  </script>
+</body>
+
+</html>
